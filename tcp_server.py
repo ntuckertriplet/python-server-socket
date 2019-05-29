@@ -2,10 +2,10 @@ import socket
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-host = socket.gethostbyname()
+host = socket.gethostname()
 port = 4444
 
-server_socket.bind((host, port))
+server_socket.bind(('192.168.1.36', port))
 
 server_socket.listen(20)
 
