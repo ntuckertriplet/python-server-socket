@@ -17,12 +17,17 @@ while True:
     # operators = [operator.add, operator.sub, operator.mul]
     # random_operator = random.choice(operators)
 
-    string_operators = ['+', '-', '*', '/']
-    rand_string_operator = random.choice(string_operators)
+    while True:
+        string_operators = ['+', '-', '*', '/']
+        rand_string_operator = random.choice(string_operators)
 
-    number_1 = random.randint(1, 10) # to be chosen randomly
-    number_2 = random.randint(1, 10) # also randomly
-    message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " = ?:" + "\r\n"
-    client_socket.send(message.encode('ascii'))
+        number_1 = random.randint(1, 10) # to be chosen randomly
+        number_2 = random.randint(1, 10) # also randomly
+        message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " = ?:" + "\r\n"
+        client_socket.send(message.encode('ascii'))
+
+        submission = client_socket.recv(1024)
+        print(str(submission))
+
 
 
