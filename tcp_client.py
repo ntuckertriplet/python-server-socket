@@ -8,8 +8,10 @@ port = 4444
 
 client_socket.connect(('192.168.1.36', port))
 
-message = client_socket.recv(1024)
+i = 0
+while i < 30:
+    message = client_socket.recv(1024)
 
-client_socket.close()
+    print(message.decode('ascii'))
 
-print(message.decode('ascii'))
+    i = i + 1
