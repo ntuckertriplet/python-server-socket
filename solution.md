@@ -1,1 +1,0 @@
-cdc{easy_scripting}
