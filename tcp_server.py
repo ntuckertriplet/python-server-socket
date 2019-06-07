@@ -17,29 +17,34 @@ while True:
     # operators = [operator.add, operator.sub, operator.mul]
     # random_operator = random.choice(operators)
 
-    while True:
-        string_operators = ['+', '-', '*', '/']
-        rand_string_operator = random.choice(string_operators)
+    correct = True
 
-        number_1 = random.randint(1, 10) # to be chosen randomly
-        number_2 = random.randint(1, 10) # also randomly
+    while correct:
+        def gen_message():
+            string_operators = ['+', '-', '*', '/']
+            rand_string_operator = random.choice(string_operators)
 
-        if rand_string_operator == '+':
-            answer = number_1 + number_2
-        elif rand_string_operator == '-':
-            answer = number_1 - number_2
-        elif rand_string_operator == '*':
-            answer = number_1 * number_2
-        elif rand_string_operator == '/':
-            answer = number_1 / number_2
+            number_1 = random.randint(1, 10) # to be chosen randomly
+            number_2 = random.randint(1, 10) # also randomly
 
-        message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " = ?:" + "\r\n"
+            if rand_string_operator == '+':
+                answer = number_1 + number_2
+            elif rand_string_operator == '-':
+                answer = number_1 - number_2
+            elif rand_string_operator == '*':
+                answer = number_1 * number_2
+            elif rand_string_operator == '/':
+                answer = number_1 / number_2
+
+            message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " = ?:" + "\r\n"
+            
+            return message
 
         def talk(message):
             try:
                 client_socket.send(message.encode('ascii'))
-            except:
-                pass
+            except IOError:
+                print("connection closed")
 
         def recv():
             try:
@@ -47,10 +52,15 @@ while True:
                 submission = encoded_submission.decode('ascii')
                 print(str(submission))
             except:
-                pass
+                print("closed, can't send")
 
-        talk(message)
+        def grade(submission):
+            if answer is not submission:
+                correct = False
+
+        talk(gen_message())
         recv()
+        grade(submission)
 
         
         
