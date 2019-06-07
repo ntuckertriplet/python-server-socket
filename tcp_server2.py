@@ -60,24 +60,39 @@ def grade(submission, answer):
         print("empty submission")
         return False
 
+"""
+This is the driver code. I want the server to always run, hence the while
+"""
 while True:
     correct = True
-    flag = "cdc"
+    flag = "cdc{I_hope_you_scripted_this}"
 
+    # Initiate the connection, as well as where it came from
     client_socket, address = server_socket.accept()
     print("received connection from %s" % str(address))
 
     i = 0
 
-    while correct is True and i < 4000:
-        seconds = 0
+    # Default to correct answers until an incorrect one is submitted, or they reach the end
+    while correct is True and i < 1000000:
+        # the sender is the encoded math problem that will be sent to the blue team, the correct answer is just that
         sender, correct_answer = gen_message()
+
+        # debugging code. print the sender problem and the answer to the problem
         print(str(sender) + " is " + str(correct_answer))
+
+        # this method takes in the sender and sends it
         talk(sender)
+
+        #receive the blue submission with this call
         blue_submission = recv()
+
+        # pass in the submission and answer, check if they are the same. If not, stop the while, stop sending
         if grade(blue_submission, correct_answer) == False:
             correct = False
         i += 1
-        if i == 4000:
+
+        # they were right an insane number of times, send the flag
+        if i == 1000000:
             client_socket.send(flag.encode('ascii'))
             print("sending flag")
