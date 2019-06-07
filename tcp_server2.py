@@ -49,10 +49,13 @@ def recv():
         print("closed, can't send")
 
 def grade(submission, answer):
-    if answer != submission:
+    print("submission:"+str(submission)+" answer:"+str(answer))
+    if int(submission) == int(answer):
+        print("correct")
+        return True
+    else:
+        print("false")
         return False
-
-    return True
 
 
 while True:
@@ -63,7 +66,8 @@ while True:
 
     while correct is True:
         sender, correct_answer = gen_message()
+        print(str(sender) + " is " + str(correct_answer))
         talk(sender)
         blue_submission = recv()
-        if grade(blue_submission, correct_answer) is False:
+        if grade(blue_submission, correct_answer) == False:
             correct = False
