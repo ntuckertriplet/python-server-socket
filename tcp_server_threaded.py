@@ -1,4 +1,4 @@
-import socket, threading
+import socket, threading, random
 from networking import *
 
 class ClientThread(threading.Thread):
@@ -8,14 +8,60 @@ class ClientThread(threading.Thread):
         print ("New connection added: ", clientAddress)
     def run(self):
         print ("Connection from : ", clientAddress)
-        msg = ''
+
+        def gen_message():
+            string_operators = ['+', '-', '*', '/']
+            rand_string_operator = random.choice(string_operators)
+
+            number_1 = random.randint(1, 10) # to be chosen randomly
+            number_2 = random.randint(1, 10) # also randomly
+
+            if rand_string_operator == '+':
+                answer = number_1 + number_2
+            elif rand_string_operator == '-':
+                answer = number_1 - number_2
+            elif rand_string_operator == '*':
+                answer = number_1 * number_2
+            elif rand_string_operator == '/':
+                answer = number_1 / number_2
+
+            message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " = ?:" + "\r\n"
+            return message, answer
+        def talk(message):
+            try:
+                client_socket.send(message.encode('ascii'))
+            except:
+                print("connection closed, can't send")
+
+        def recv():
+            try:
+                encoded_submission = client_socket.recv(1024)
+                submission = encoded_submission.decode('ascii')
+                print(str(submission))
+                return submission
+            except:
+                print("closed, can't receive")
+
+        def grade(submission, answer):
+            try:
+                print("submission:"+str(submission)+" answer:"+str(answer))
+                if int(submission) == int(answer):
+                    print("correct")
+                    return True
+                else:
+                    print("false")
+                    return False
+            except:
+                print("empty submission")
+                return False
+
         while True:
-            data = self.csocket.recv(1024)
-            msg = data.decode()
-            if msg=='bye':
+            send_message, answer = gen_message()
+            talk(send_message)
+            input_submission = recv()
+            if grade(input_submission, answer) == False:
               break
-            print ("from client", msg)
-            self.csocket.send(bytes(msg,'UTF-8'))
+            print ("from client", input_submission)
         print ("Client at ", clientAddress , " disconnected...")
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
