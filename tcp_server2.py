@@ -1,16 +1,19 @@
 import socket, operator, random, logging
 from networking import ip
 
+"""
+This block sets up the listener and all of the server-side operations using IPV4
+the .listen(20) means a maximum of 20 connections at a time
+"""
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
 host = socket.gethostname()
 port = 4444
-
 server_socket.bind((ip, port))
-
 server_socket.listen(20)
 
-
+"""
+This is the block that generates the math problem to solve and the answer to that problem
+"""
 def gen_message():
     string_operators = ['+', '-', '*', '/']
     rand_string_operator = random.choice(string_operators)
@@ -33,7 +36,7 @@ def gen_message():
 def talk(message):
     try:
         client_socket.send(message.encode('ascii'))
-    except IOError:
+    except:
         print("connection closed")
 
 def recv():
@@ -46,16 +49,21 @@ def recv():
         print("closed, can't send")
 
 def grade(submission, answer):
-    if answer is not submission:
+    if answer != submission:
         return False
 
-correct = True
+    return True
+
+
 while True:
+    correct = True
+
     client_socket, address = server_socket.accept()
     print("received connection from %s" % str(address))
 
-    sender, correct_answer = gen_message()
-    talk(sender)
-    blue_submission = recv()
-    if grade(blue_submission, correct_answer) is False:
-        correct = False
+    while correct is True:
+        sender, correct_answer = gen_message()
+        talk(sender)
+        blue_submission = recv()
+        if grade(blue_submission, correct_answer) is False:
+            correct = False
