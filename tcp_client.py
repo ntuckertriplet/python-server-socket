@@ -6,7 +6,7 @@ host = socket.gethostname()
 
 port = 4444
 
-client_socket.connect(('192.168.1.36', port))
+client_socket.connect(('10.126.161.151', port))
 
 i = 0
 while True:

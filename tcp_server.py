@@ -1,18 +1,12 @@
 import socket, operator, random, logging
 
-def talk(self):
-    logging.info("starting")
-    while True:
-        try:
-            client_socket.send(message.encode('ascii'))
-        except:
-            pass
+
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 host = socket.gethostname()
 port = 4444
 
-server_socket.bind(('192.168.1.36', port))
+server_socket.bind(('10.126.161.151', port))
 
 server_socket.listen(20)
 
@@ -45,11 +39,26 @@ while True:
             answer = number_1 / number_2
 
         message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " = ?:" + "\r\n"
-        client_socket.send(message.encode('ascii'))
 
-        encoded_submission = client_socket.recv(1024)
-        submission = encoded_submission.decode('ascii')
-        print(str(submission))
+        def talk(message):
+            try:
+                client_socket.send(message.encode('ascii'))
+            except:
+                pass
+
+        def recv():
+            try:
+                encoded_submission = client_socket.recv(1024)
+                submission = encoded_submission.decode('ascii')
+                print(str(submission))
+            except:
+                pass
+
+        talk(message)
+        recv()
+
+        
+        
         
 
 
