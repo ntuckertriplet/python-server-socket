@@ -49,6 +49,7 @@ def grade(submission, answer):
     if answer is not submission:
         return False
 
+correct = True
 while True:
     client_socket, address = server_socket.accept()
     print("received connection from %s" % str(address))
