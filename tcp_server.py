@@ -1,26 +1,21 @@
 import socket, operator, random, logging
-
+from networking import ip
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 host = socket.gethostname()
 port = 4444
 
-server_socket.bind(('10.126.161.151', port))
+server_socket.bind((ip, port))
 
 server_socket.listen(20)
 
 while True:
     client_socket, address = server_socket.accept()
-
     print("received connection from %s" % str(address))
-
-    
 
     # operators = [operator.add, operator.sub, operator.mul]
     # random_operator = random.choice(operators)
-
-
 
     while True:
         string_operators = ['+', '-', '*', '/']
