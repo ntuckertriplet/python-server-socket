@@ -1,5 +1,12 @@
-import socket, operator, random
+import socket, operator, random, logging
 
+def talk(self):
+    logging.info("starting")
+    while True:
+        try:
+            client_socket.send(message.encode('ascii'))
+        except:
+            pass
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 host = socket.gethostname()
@@ -13,6 +20,8 @@ while True:
     client_socket, address = server_socket.accept()
 
     print("received connection from %s" % str(address))
+
+    
 
     # operators = [operator.add, operator.sub, operator.mul]
     # random_operator = random.choice(operators)
