@@ -14,10 +14,10 @@ i = 0
 flag_received = False
 while flag_received is False:
     data = s.recv(BUFFER_SIZE)
-    submission = data.decode('ascii')
-    final = submission.split(' ')
+    # submission = data.decode('ascii')
+    final = data.split(' ')
     del final[3:]
-    print(submission)
+    print(data)
     i += 1
     print(str(i))
     try:
