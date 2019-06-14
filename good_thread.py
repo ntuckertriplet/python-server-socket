@@ -1,4 +1,4 @@
-import socket, threading, random
+import socket, threading, random, time
 from networking import port, ip
 
 def gen_message():
@@ -45,7 +45,13 @@ class ThreadedServer(object):
             threading.Thread(target = self.listenToClient,args = (client,address)).start()
 
     def listenToClient(self, client, address):
-        while True:
+        flag = 'cdc{I_hope_you_scripted_this}'
+        send_flag = True
+        i = 0
+        start_time = time.time()
+        elapsed = time.time()
+        while i < 10000 and elapsed - start_time < 20:
+            elapsed = time.time()
             try:
                 send_message, answer = gen_message()
                 try:
@@ -55,7 +61,12 @@ class ThreadedServer(object):
                 encoded_submission = client.recv(1024)
                 # submission = encoded_submission.decode('ascii')
                 if encoded_submission:
-                    if grade(encoded_submission, answer) is False:
+                    if grade(encoded_submission, answer) is True:
+                        # client.close()
+                        print('correct')
+                        i += 1
+                    else:
+                        send_flag = False
                         client.close()
                         print('incorrect')
                 else:
@@ -63,6 +74,10 @@ class ThreadedServer(object):
             except:
                 client.close()
                 return False
+        if send_flag is True:
+            print('sending flag')
+            client.send(flag)
+            client.close()
 
 if __name__ == "__main__":
     ThreadedServer('',port).listen()
