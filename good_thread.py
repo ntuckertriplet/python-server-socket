@@ -1,4 +1,5 @@
 import socket, threading, random, time
+# networking is not a module, it is a py file containing a string ip and int port number
 from networking import port, ip
 
 def gen_message():
@@ -20,10 +21,8 @@ def gen_message():
 def grade(submission, answer):
     try:
         if int(submission) == int(answer):
-            print("correct")
             return True
         else:
-            print("false")
             return False
     except:
         print("empty submission")
@@ -41,7 +40,6 @@ class ThreadedServer(object):
         self.sock.listen(5)
         while True:
             client, address = self.sock.accept()
-            # client.settimeout(60)
             threading.Thread(target = self.listenToClient,args = (client,address)).start()
 
     def listenToClient(self, client, address):
@@ -59,10 +57,8 @@ class ThreadedServer(object):
                 except:
                     print('Client disconnected')
                 encoded_submission = client.recv(1024)
-                # submission = encoded_submission.decode('ascii')
                 if encoded_submission:
                     if grade(encoded_submission, answer) is True:
-                        # client.close()
                         print('correct')
                         i += 1
                     else:
@@ -74,7 +70,7 @@ class ThreadedServer(object):
             except:
                 client.close()
                 return False
-        if send_flag is True:
+        if i == 10000 and send_flag is True:
             print('sending flag')
             client.send(flag)
             client.close()
