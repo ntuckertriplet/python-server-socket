@@ -45,7 +45,7 @@ class ThreadedServer(object):
             threading.Thread(target = self.listenToClient,args = (client,address)).start()
 
     def listenToClient(self, client, address):
-        flag = 'cdc{I_hope_you_scripted_this}'
+        flag = 'not the real flag, but nice try'
         send_flag = True
         i = 0
         start_time = time.time()
