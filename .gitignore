@@ -1,2 +1,4 @@
 networking.py
 *.pyc
+.idea
+__pycache__
