@@ -1,6 +1,6 @@
 import socket, threading, random, time
 # networking is not a module, it is a py file containing a string ip and int port number
-from networking import port, ip
+from networking import port
 
 def gen_message():
     string_operators = ['+', '-', '*', '/']
