@@ -13,7 +13,7 @@ def gen_message():
     elif rand_string_operator == 'times':
         answer = number_1 * number_2
     elif rand_string_operator == 'divided by':
-        answer = number_1 / number_2
+        answer = number_1 // number_2
     message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " equals ?:" + "\r\n"
     return message, answer
 
