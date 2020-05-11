@@ -1,11 +1,10 @@
-version: '1'
+version: '3.7'
 
 services:
-  script:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
-    command: python3 first_server.py && python3 second_server.py && python3 third_server.py
     expose:
       - 4444
       - 4445
