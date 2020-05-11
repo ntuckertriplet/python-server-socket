@@ -1,18 +1,24 @@
 import socket, threading, random, time
 
 
-def gen_message():
+def gen_message(value):
     string_operators = ['plus', 'minus', 'times', 'divided by']
-    rand_string_operator = random.choice(string_operators)
+    math_operators = ['+', '-', '*', '//']
+
+    if value < 500:
+        rand_string_operator = random.choice(math_operators)
+    else:
+        rand_string_operator = random.choice(string_operators)
+        
     number_1 = random.randint(1, 10) # to be chosen randomly
     number_2 = random.randint(1, 10) # also randomly
-    if rand_string_operator == 'plus':
+    if rand_string_operator == 'plus' or rand_string_operator == '+':
         answer = number_1 + number_2
-    elif rand_string_operator == 'minus':
+    elif rand_string_operator == 'minus' or rand_string_operator == '-':
         answer = number_1 - number_2
-    elif rand_string_operator == 'times':
+    elif rand_string_operator == 'times' or rand_string_operator == '*':
         answer = number_1 * number_2
-    elif rand_string_operator == 'divided by':
+    elif rand_string_operator == 'divided by' or rand_string_operator == '/':
         answer = number_1 // number_2
     message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " equals ?:" + "\r\n"
     return message, answer
