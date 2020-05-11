@@ -9,7 +9,7 @@ def gen_message(value):
         rand_string_operator = random.choice(math_operators)
     else:
         rand_string_operator = random.choice(string_operators)
-        
+
     number_1 = random.randint(1, 10) # to be chosen randomly
     number_2 = random.randint(1, 10) # also randomly
     if rand_string_operator == 'plus' or rand_string_operator == '+':
@@ -53,7 +53,7 @@ class ThreadedServer(object):
         elapsed = time.time()
         while i < 1000 and elapsed - start_time < 35:
             elapsed = time.time()
-            send_message, answer = gen_message()
+            send_message, answer = gen_message(i)
 
             try:
                 client.send(send_message.encode('ascii'))
