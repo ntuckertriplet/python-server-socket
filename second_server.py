@@ -1,6 +1,5 @@
 import socket, threading, random, time
-# networking is not a module, it is a py file containing a string ip and int port number
-from networking import port, ip
+
 
 def gen_message():
     string_operators = ['plus', 'minus', 'times', 'divided by']
@@ -18,15 +17,13 @@ def gen_message():
     message = str(number_1) + " " + str(rand_string_operator) + " " + str(number_2) + " equals ?:" + "\r\n"
     return message, answer
 
+
 def grade(submission, answer):
-    try:
-        if int(submission) == int(answer):
-            return True
-        else:
-            return False
-    except:
-        print("empty submission")
-        return False
+    if int(submission) == int(answer):
+        return True
+
+    return False
+
 
 class ThreadedServer(object):
     def __init__(self, host, port):
@@ -43,41 +40,41 @@ class ThreadedServer(object):
             threading.Thread(target = self.listenToClient,args = (client,address)).start()
 
     def listenToClient(self, client, address):
-        flag = 'not the real flag, but nice try'
+        flag = 'TEST FLAG'
         send_flag = True
         i = 0
         start_time = time.time()
         elapsed = time.time()
-        while i < 10000 and elapsed - start_time < 20:
+        while i < 1000 and elapsed - start_time < 35:
             elapsed = time.time()
+            send_message, answer = gen_message()
+
             try:
-                send_message, answer = gen_message()
-                try:
-                    client.send(send_message)
-                except:
-                    print('Client disconnected')
+                client.send(send_message.encode('ascii'))
                 encoded_submission = client.recv(1024)
-                if encoded_submission:
-                    if grade(encoded_submission, answer) is True:
-                        print('correct')
-                        i += 1
-                    else:
-                        send_flag = False
-                        client.close()
-                        print('incorrect')
+                if encoded_submission == b'\n':
+                    client.send(b'empty answer')
+                    client.close()
+
+                if grade(encoded_submission, answer) is True:
+                    i += 1
                 else:
-                    raise error('Client disconnected')
-            except:
+                    send_flag = False
+                    client.send(b'incorrect answer')
+                    client.close()
+                    print('incorrect')
+            except Exception as e:
                 client.close()
+                print(e)
                 return False
-        if i == 10000 and send_flag is True:
+
+        if i == 1000 and send_flag is True:
             print('sending flag')
-            client.send(flag)
-            client.close()
-        else:
+            client.send(flag.encode('ascii'))
             client.close()
 
+
 if __name__ == "__main__":
-    ThreadedServer('',port).listen()
+    ThreadedServer('', 4445).listen()
 
 
