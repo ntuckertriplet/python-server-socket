@@ -1,4 +1,4 @@
-import socket, threading, random, time
+import socket, threading, random, time, datetime
 
 
 def gen_message(value):
@@ -46,6 +46,7 @@ class ThreadedServer(object):
             threading.Thread(target = self.listenToClient,args = (client,address)).start()
 
     def listenToClient(self, client, address):
+        print('Connection from: ' + str(address) + ' at: ' + str(datetime.datetime.now()))
         flag = 'TEST FLAG'
         send_flag = True
         i = 0
@@ -57,12 +58,13 @@ class ThreadedServer(object):
 
             try:
                 client.send(send_message.encode('ascii'))
-                encoded_submission = client.recv(1024)
-                if encoded_submission == b'\n':
+                submission = client.recv(1024).decode('ascii').rstrip()
+                print('Submission: ' + submission + ' from: ' + str(address) + ' at: ' + str(datetime.datetime.now()))
+                if submission == b'\n':
                     client.send(b'empty answer')
                     client.close()
 
-                if grade(encoded_submission, answer) is True:
+                if grade(submission, answer) is True:
                     i += 1
                 else:
                     send_flag = False
